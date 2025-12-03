@@ -1,5 +1,5 @@
 // app/index.tsx - 动态版本
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Dimensions} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 
@@ -26,7 +26,13 @@ const allTabIcons = [
 const VISIBLE_TABS_COUNT = 4; // 修改为 3, 4, 或 5
 const tabIcons = allTabIcons.slice(0, VISIBLE_TABS_COUNT);
 
-const TabBar: React.FC = () => {
+interface TabBarProps {
+    changeTabIndex: (index: number) => void;
+}
+
+const TabBar: React.FC<TabBarProps> = ({
+                                           changeTabIndex,
+                                       }) => {
     const [activeIndex, setActiveIndex] = useState(0);
 
     // 根据图标数量计算动态样式
@@ -53,21 +59,14 @@ const TabBar: React.FC = () => {
         setActiveIndex(index);
     };
 
+    useEffect(() => {
+        if (changeTabIndex) {
+            changeTabIndex(activeIndex)
+        }
+    }, [activeIndex]);
+
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Dynamic Tab Bar</Text>
-            <Text style={styles.subtitle}>
-                Showing {tabIcons.length} tabs (configurable 3-5)
-            </Text>
-
-            {/* 活跃状态显示 */}
-            <View style={styles.statusContainer}>
-                <View style={[styles.activeIndicator, {backgroundColor: '#8200db'}]}/>
-                <Text style={styles.statusText}>
-                    Selected: {tabIcons[activeIndex]?.label}
-                </Text>
-            </View>
-
             {/* Tab Bar */}
             <View style={styles.tabBarWrapper}>
                 <LinearGradient
@@ -106,12 +105,14 @@ const TabBar: React.FC = () => {
                             <Text style={[
                                 styles.tabLabel,
                                 {
-                                    color: '#666666',
+                                    color: activeIndex === index ? '#8200db' : '#666666',
                                     fontSize: tabIcons.length >= 5 ? 10 : 12, // 5个图标时字体稍小
                                 }
                             ]}>
                                 {tab.label}
                             </Text>
+                            <View
+                                style={[styles.activeIndexLine, {backgroundColor: activeIndex === index ? '#8200db' : 'transparent'}]}/>
                         </TouchableOpacity>
                     ))}
                 </LinearGradient>
@@ -130,19 +131,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         paddingTop: 80,
         paddingHorizontal: 20,
-    },
-    title: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginBottom: 8,
-        color: '#333',
-    },
-    subtitle: {
-        fontSize: 16,
-        textAlign: 'center',
-        marginBottom: 40,
-        color: '#666',
     },
     tabBarWrapper: {
         position: 'absolute',
@@ -203,4 +191,9 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         color: '#333',
     },
+    activeIndexLine: {
+        borderRadius: '5',
+        height: 2,
+        width: '100%'
+    }
 });

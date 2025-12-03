@@ -1,15 +1,28 @@
-// app/index.tsx
-import {View, Text, StyleSheet, Pressable} from 'react-native';
-import {Link} from 'expo-router';
-import React from "react";
+import {View, StyleSheet} from 'react-native';
+
+import React, {useState} from "react";
 
 import TarBar from '../components/TabBar'
+import HomeScreen from "./(tabs)/Home";
+import * as eva from '@eva-design/eva';
+import {ApplicationProvider, Layout, Text} from '@ui-kitten/components';
 
 const AppScreen: React.FC = () => {
+    const [activeIndex, setActiveIndex] = useState(999);
+
     return (
-        <View style={styles.container}>
-            <TarBar/>
-        </View>
+        <>
+            <ApplicationProvider {...eva} theme={eva.light}>
+                <View style={styles.container}>
+                    {activeIndex === 0 && (<HomeScreen/>)}
+
+                    <TarBar changeTabIndex={(index) => {
+                        setActiveIndex(index);
+                    }}/>
+                </View>
+            </ApplicationProvider>
+        </>
+
     )
 }
 

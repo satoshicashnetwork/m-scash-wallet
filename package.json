@@ -9,6 +9,8 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@eva-design/eva": "^2.2.0",
+    "@ui-kitten/components": "^5.3.1",
     "babel-preset-expo": "^54.0.7",
     "expo": "~54.0.25",
     "expo-constants": "~18.0.10",
