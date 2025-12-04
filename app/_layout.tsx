@@ -1,24 +1,16 @@
-import {useFonts} from 'expo-font';
-import {Stack} from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import {useEffect} from 'react';
-
-SplashScreen.preventAutoHideAsync();
+import { Slot } from 'expo-router';
+import * as eva from '@eva-design/eva';
+import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function RootLayout() {
-    const [loaded] = useFonts({
-        SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-    });
-
-    useEffect(() => {
-        if (loaded) {
-            SplashScreen.hideAsync(); // 改为 hideAsync
-        }
-    }, [loaded]);
-
-    if (!loaded) {
-        return null;
-    }
-
-    return <Stack/>;
+    return (
+        <SafeAreaProvider>
+            <IconRegistry icons={EvaIconsPack} />
+            <ApplicationProvider {...eva} theme={eva.light}>
+                <Slot />
+            </ApplicationProvider>
+        </SafeAreaProvider>
+    );
 }
