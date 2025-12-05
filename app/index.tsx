@@ -6,6 +6,7 @@ import TarBar from '../components/TabBar'
 import HomeScreen from "./(tabs)/Home";
 import * as eva from '@eva-design/eva';
 import {ApplicationProvider, Layout, Text} from '@ui-kitten/components';
+import TabsIndexScreen from "./(tabs)";
 
 const AppScreen: React.FC = () => {
     const [activeIndex, setActiveIndex] = useState(999);
@@ -14,7 +15,7 @@ const AppScreen: React.FC = () => {
         <>
             <ApplicationProvider {...eva} theme={eva.light}>
                 <View style={styles.container}>
-                    {activeIndex === 0 && (<HomeScreen/>)}
+                    <TabsIndexScreen activeTab={activeIndex}/>
 
                     <TarBar changeTabIndex={(index) => {
                         setActiveIndex(index);
@@ -32,9 +33,5 @@ export default AppScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 20,
-        backgroundColor: '#fff',
     }
 });

@@ -127,10 +127,7 @@ export default TabBar;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#ffffff',
-        paddingTop: 80,
-        paddingHorizontal: 20,
+
     },
     tabBarWrapper: {
         position: 'absolute',
