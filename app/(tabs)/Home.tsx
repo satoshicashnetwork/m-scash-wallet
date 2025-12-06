@@ -5,6 +5,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 
 import BalancePanel from "../../components/BalancePanel";
 import HomeTopNavi from "../../components/HomeTopNavi";
+import RecentTransactions from "../../components/RecentTransactions";
 
 
 const HomeScreen: React.FC = () => {
@@ -19,8 +20,8 @@ const HomeScreen: React.FC = () => {
                 {/* 个人余额数据面板 */}
                 <BalancePanel/>
 
-                {/* 发送和接收按钮 */}
-
+                {/* 账户明细记录 */}
+                <RecentTransactions/>
             </Layout>
         </SafeAreaView>
     )

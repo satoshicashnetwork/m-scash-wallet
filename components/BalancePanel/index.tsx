@@ -38,7 +38,7 @@ const BalancePanel: React.FC = () => {
     return (
         <>
             <Card style={styles.mainBalanceCard}>
-                <View style={styles.contentContainer}>
+                <View>
                     <View style={styles.balanceSection}>
                         <View style={styles.balanceLabelRow}>
                             <View style={styles.balanceLabelRowHeader}>
@@ -98,8 +98,8 @@ const BalancePanel: React.FC = () => {
                                 activeOpacity={0.7}
                             >
                                 <CopyOutlineIcon
-                                    width={12}
-                                    height={12}
+                                    width={13}
+                                    height={13}
                                     fill="rgba(255,255,255,0.9)"
                                 />
                             </TouchableOpacity>
@@ -140,13 +140,9 @@ const styles = StyleSheet.create({
     // 主余额卡片样式
     mainBalanceCard: {
         marginTop: 20,
-        elevation: 8,
-        shadowColor: '#8503bd78',
-        shadowOffset: {width: 0, height: 8},
-        shadowOpacity: 0.15,
-        shadowRadius: 16,
+        shadowColor: '#9100cf9c',
         backgroundColor: '#9100cf9c',
-        padding: 10,
+        padding: 5,
         borderRadius: 24,
         overflow: 'hidden',
         alignSelf: 'center',
@@ -161,11 +157,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255,255,255,0.2)',
         justifyContent: 'center',
         alignItems: 'center',
-    },
-
-    // 新增：内容容器
-    contentContainer: {
-        flex: 1,
     },
 
     // 修改后的余额标签行
@@ -233,8 +224,7 @@ const styles = StyleSheet.create({
     cardNumber: {
         color: 'rgba(255,255,255,0.8)',
         fontSize: 16,
-        letterSpacing: 2,
-        fontFamily: 'SpaceMono-Regular',
+        letterSpacing: 2
     },
     // 新增：按钮区域样式
     buttonSection: {

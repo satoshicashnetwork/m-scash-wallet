@@ -64,7 +64,7 @@ const HomeTopNavi: React.FC = () => {
         <TopNavigation
             style={{
                 paddingTop: 22,
-                paddingRight: 90,
+                paddingRight: 10,
                 paddingBottom: 0,
                 paddingLeft: 10,
             }}
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         // 关键：添加这个
-        flexShrink: 112, // 允许被压缩
+        flexShrink: 100, // 允许被压缩
         marginLeft: 'auto', // 推到最右边
     }
 });

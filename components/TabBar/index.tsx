@@ -100,17 +100,17 @@ const TabBar: React.FC<TabBarProps> = ({
                             <tab.icon
                                 width={tabIcons.length >= 5 ? 28 : 32} // 5个图标时稍微缩小
                                 height={tabIcons.length >= 5 ? 28 : 32}
-                                color={'#666666'}
+                                fill={activeIndex === index ? '#8200db' : '#666666'}
                             />
-                            <Text style={[
-                                styles.tabLabel,
-                                {
-                                    color: activeIndex === index ? '#8200db' : '#666666',
-                                    fontSize: tabIcons.length >= 5 ? 10 : 12, // 5个图标时字体稍小
-                                }
-                            ]}>
-                                {tab.label}
-                            </Text>
+                            {/*<Text style={[*/}
+                            {/*    styles.tabLabel,*/}
+                            {/*    {*/}
+                            {/*        color: activeIndex === index ? '#8200db' : '#666666',*/}
+                            {/*        fontSize: tabIcons.length >= 5 ? 10 : 12, // 5个图标时字体稍小*/}
+                            {/*    }*/}
+                            {/*]}>*/}
+                            {/*    {tab.label}*/}
+                            {/*</Text>*/}
                             <View
                                 style={[styles.activeIndexLine, {backgroundColor: activeIndex === index ? '#8200db' : 'transparent'}]}/>
                         </TouchableOpacity>
