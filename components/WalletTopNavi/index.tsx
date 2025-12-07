@@ -7,6 +7,7 @@ const localImages = {
 // @ts-ignore
 import PlusSquareOutlineIcon from '../../assets/icons/btn/plus-square-outline.svg';
 
+
 import {StyleSheet, TouchableOpacity, View} from "react-native";
 import {Avatar, Text, TopNavigation} from "@ui-kitten/components";
 
@@ -31,7 +32,7 @@ const WalletTopNavi: React.FC = () => {
     const renderRightActions = () => {
         return (
             <View style={styles.topRight}>
-                {/* 扫码按钮 */}
+                {/* 添加钱包 */}
                 <TouchableOpacity
                     style={{
                         padding: 10,

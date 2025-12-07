@@ -15,7 +15,7 @@ const WalletScreen: React.FC = () => {
             <Layout style={styles.container}>
                 {/* 顶部导航 */}
                 <WalletTopNavi />
-                <WalletPanel />
+                <WalletPanel/>
 
             </Layout>
         </SafeAreaView>

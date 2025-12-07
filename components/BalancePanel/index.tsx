@@ -94,7 +94,7 @@ const BalancePanel: React.FC = () => {
                         <View style={styles.balanceLabelRowHeader}>
                             <Text style={styles.cardNumber}>**** **** **** 1234</Text>
                             <TouchableOpacity
-                                onPress={() => console.log('打开二维码')}
+                                onPress={() => console.log('复制钱包地址')}
                                 activeOpacity={0.7}
                             >
                                 <CopyOutlineIcon
