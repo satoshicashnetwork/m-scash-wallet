@@ -33,7 +33,7 @@ interface TabBarProps {
 const TabBar: React.FC<TabBarProps> = ({
                                            changeTabIndex,
                                        }) => {
-    const [activeIndex, setActiveIndex] = useState(0);
+    const [activeIndex, setActiveIndex] = useState(1);
 
     // 根据图标数量计算动态样式
     const getDynamicStyles = () => {

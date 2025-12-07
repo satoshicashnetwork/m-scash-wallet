@@ -28,6 +28,7 @@
   ],
   "include": [
     "types/**/*",
+    "utils/**/*",
     "declarations.d.ts"
   ],
   "extends": "expo/tsconfig.base"
