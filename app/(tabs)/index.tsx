@@ -4,6 +4,7 @@ import {Link} from 'expo-router';
 import HomeScreen from "./Home";
 import React, {useState} from "react";
 import WalletScreen from "./Wallet";
+import MinerScreen from "./Miner";
 
 interface TabsIndexScreenProps {
     activeTab: number;  // 当前选中的下标
@@ -18,6 +19,7 @@ const TabsIndexScreen: React.FC<TabsIndexScreenProps> = ({
             <View style={styles.container}>
                 {activeTab === 0 && (<HomeScreen/>)}
                 {activeTab === 1 && (<WalletScreen/>)}
+                {activeTab === 2 && (<MinerScreen/>)}
             </View>
         </>
     )

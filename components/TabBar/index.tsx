@@ -8,18 +8,20 @@ import {LinearGradient} from 'expo-linear-gradient';
 import HomeTabIcon from '../../assets/icons/tab-bar/home-tab.svg';
 // @ts-ignore
 import WalletTabIcon from '../../assets/icons/tab-bar/wallet-tab.svg';
+
 // @ts-ignore
-import TransactionTabIcon from '../../assets/icons/tab-bar/transaction-tab.svg';
+import SettingTabIcon from '../../assets/icons/tab-bar/setting-tab.svg';
+
 // @ts-ignore
-import ProfileTabIcon from '../../assets/icons/tab-bar/profile-tab.svg';
+import MinerTabIcon from '../../assets/icons/tab-bar/miner-tab.svg';
 
 
 // 可配置的图标数组
 const allTabIcons = [
     {icon: HomeTabIcon, label: 'Home'},
     {icon: WalletTabIcon, label: 'Wallet'},
-    {icon: TransactionTabIcon, label: 'Transaction'},
-    {icon: ProfileTabIcon, label: 'Profile'}
+    {icon: MinerTabIcon, label: 'Miner'},
+    {icon: SettingTabIcon, label: 'Settings'}
 ];
 
 // 可以选择显示的图标数量（3-5个）
@@ -33,7 +35,7 @@ interface TabBarProps {
 const TabBar: React.FC<TabBarProps> = ({
                                            changeTabIndex,
                                        }) => {
-    const [activeIndex, setActiveIndex] = useState(1);
+    const [activeIndex, setActiveIndex] = useState(2);
 
     // 根据图标数量计算动态样式
     const getDynamicStyles = () => {

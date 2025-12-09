@@ -1,20 +1,13 @@
 import React from "react";
-import {StyleSheet, TouchableOpacity, View} from "react-native";
+import {StyleSheet, View} from "react-native";
 import {Avatar, Text, TopNavigation} from "@ui-kitten/components";
-
 
 const localImages = {
     logo: require('../../assets/images/logo.png')
 };
 
-// @ts-ignore
-import PlusSquareOutlineIcon from '../../assets/icons/btn/plus-square-outline.svg';
 
-
-
-
-
-const WalletTopNavi: React.FC = () => {
+const MinerTopNavi: React.FC = () => {
     // 头部左边
     const renderTopHeader = () => {
         return (
@@ -24,32 +17,11 @@ const WalletTopNavi: React.FC = () => {
                     style={styles.avatar}
                 />
                 <Text style={styles.topTitle}>
-                    钱包中心
+                    矿工面板
                 </Text>
             </View>
         )
     }
-
-    // 头部右边按钮集
-    const renderRightActions = () => {
-        return (
-            <View style={styles.topRight}>
-                {/* 添加钱包 */}
-                <TouchableOpacity
-                    style={{
-                        padding: 10,
-                    }}
-                    onPress={() => console.log('添加钱包', '开始添加钱包了')}
-                    activeOpacity={0.7}
-                >
-                    <PlusSquareOutlineIcon width={24}
-                                           height={24}
-                                           color={'#666666'}/>
-                </TouchableOpacity>
-
-            </View>
-        );
-    };
 
 
     return (
@@ -62,12 +34,11 @@ const WalletTopNavi: React.FC = () => {
             }}
             title={renderTopHeader}
             alignment='start'
-            accessoryRight={renderRightActions}
         />
     )
 }
 
-export default WalletTopNavi;
+export default MinerTopNavi;
 
 
 const styles = StyleSheet.create({
