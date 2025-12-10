@@ -7,6 +7,7 @@ const localImages = {
 };
 
 
+
 const MinerTopNavi: React.FC = () => {
     // 头部左边
     const renderTopHeader = () => {
@@ -17,7 +18,7 @@ const MinerTopNavi: React.FC = () => {
                     style={styles.avatar}
                 />
                 <Text style={styles.topTitle}>
-                    矿工面板
+                    Miner panel
                 </Text>
             </View>
         )
