@@ -9,8 +9,6 @@ import RecentTransactions from "../../components/RecentTransactions";
 
 
 const HomeScreen: React.FC = () => {
-
-
     return (
         <SafeAreaView style={styles.container}>
             <Layout style={styles.container}>

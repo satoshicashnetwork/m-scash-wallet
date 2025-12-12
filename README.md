@@ -37,7 +37,6 @@
 ```
 
 ```typescript
-// network.ts
 import { Network } from 'bitcoinjs-lib';
 
 // Scash 网络参数
