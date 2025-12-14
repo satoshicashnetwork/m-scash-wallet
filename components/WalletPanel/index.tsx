@@ -1,8 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {Card, Text, List, ListItem, Avatar} from '@ui-kitten/components';
 import {Dimensions, StyleSheet, View, Image, ImageProps, TouchableOpacity} from "react-native";
-import Svg, {Circle, Path} from "react-native-svg";
-import {TextProps} from "@ui-kitten/components/ui/text/text.component";
 import {smartTruncate} from "../../utils/FormatUtils";
 
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
@@ -42,55 +40,15 @@ const localImages: { [key: string]: any } = {
 
 // @ts-ignore
 import TrashIcon from '../../assets/icons/btn/trash.svg';
-
-
-interface WalletAddress {
-    address: string;
-    tag: string;
-}
-
-interface Wallet {
-    id: string;
-    avatar: string;
-    name: string;
-    addresses: WalletAddress[];
-    type: 'Phrase' | 'Core'; // 钱包类型： 助记词钱包  核心钱包
-}
+import {WalletAddress, WalletInfo} from "../../types";
 
 const WalletPanel: React.FC = () => {
-    const wallets: Wallet[] = [
-        {
-            id: '1',
-            name: '主钱包',
-            avatar: 'b1',
-            addresses: [
-                {tag: '空投地址', address: 'scash1q6a5ndlqzc62ly9ce8ahuepq63pchuwumw6m963'},
-                {tag: '矿工地址', address: 'scash1q9ptq0xhnxyks38h8craumyfdcr2hn9z2nm3ryu'},
-                {tag: '空投地址', address: 'scash1q6a5ndlqzc62ly9ce8ahuepq63pchuwumw6m963'},
-                {tag: '矿工地址', address: 'scash1q9ptq0xhnxyks38h8craumyfdcr2hn9z2nm3ryu'},
-                {tag: '空投地址', address: 'scash1q6a5ndlqzc62ly9ce8ahuepq63pchuwumw6m963'},
-                {tag: '矿工地址', address: 'scash1q9ptq0xhnxyks38h8craumyfdcr2hn9z2nm3ryu'},
-                {tag: '空投地址', address: 'scash1q6a5ndlqzc62ly9ce8ahuepq63pchuwumw6m963'},
-                {tag: '矿工地址', address: 'scash1q9ptq0xhnxyks38h8craumyfdcr2hn9z2nm3ryu'}
-            ],
-            type: 'Core'
-        },
-        {
-            id: '2',
-            name: '主钱包',
-            avatar: 'b2',
-            addresses: [
-                {tag: '空投地址', address: 'scash1q6a5ndlqzc62ly9ce8ahuepq63pchuwumw6m963'},
-                {tag: '矿工地址', address: 'scash1q9ptq0xhnxyks38h8craumyfdcr2hn9z2nm3ryu'}
-            ],
-            type: 'Phrase'
-        }
-    ]
+    const wallets: WalletInfo[] = []
 
     const [activeWallet, setActiveWallet] = useState<string>('1');  // 当前被选中的钱包ID， 没有就默认选择第一个
 
 
-    const renderItemIcon = (props: any, wallet: Wallet) => {
+    const renderItemIcon = (props: any, wallet: WalletInfo) => {
         let sourceAvatar = localImages[wallet.avatar]
         return (
             <TouchableOpacity
@@ -109,7 +67,7 @@ const WalletPanel: React.FC = () => {
         )
     }
 
-    const renderItem = ({item, index}: { item: Wallet; index: number }): React.ReactElement => (
+    const renderItem = ({item, index}: { item: WalletInfo; index: number }): React.ReactElement => (
         <ListItem
             accessoryLeft={(imageProps) => renderItemIcon(imageProps, item)}
         />

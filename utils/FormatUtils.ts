@@ -115,3 +115,59 @@ export const smartTruncate = (
 
     return `${frontPart}${ellipsis}${backPart}`;
 };
+
+/**
+ * 将 Unix 时间戳转换为相对时间或绝对时间
+ * @param timestamp - Unix 时间戳（秒级或毫秒级均可）
+ * @returns 相对时间字符串，如："刚刚"、"1分钟前"、"3天前"、"2023年12月25日"
+ */
+export const formatRelativeTime = (timestamp: number): string => {
+    const now = Date.now();
+
+    // 判断是秒级还是毫秒级时间戳
+    const inputTime = timestamp.toString().length === 10 ? timestamp * 1000 : timestamp;
+
+    const diffInSeconds = Math.floor((now - inputTime) / 1000);
+
+    // 小于 60 秒
+    if (diffInSeconds < 60) {
+        return '刚刚';
+    }
+
+    // 小于 60 分钟
+    const minutes = Math.floor(diffInSeconds / 60);
+    if (minutes < 60) {
+        return `${minutes}分钟前`;
+    }
+
+    // 小于 24 小时
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) {
+        return `${hours}小时前`;
+    }
+
+    // 小于 48 小时（昨天）
+    const days = Math.floor(hours / 24);
+    if (days === 1) {
+        return '昨天';
+    }
+
+    // 小于 7 天
+    if (days < 7) {
+        return `${days}天前`;
+    }
+
+    // 超过 7 天，显示具体日期
+    const date = new Date(inputTime);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+
+    // 如果是今年，只显示月日；否则显示年月日
+    const currentYear = new Date(now).getFullYear();
+    if (year === currentYear) {
+        return `${month}月${day}日`;
+    } else {
+        return `${year}年${month}月${day}日`;
+    }
+}

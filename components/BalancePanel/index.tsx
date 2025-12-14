@@ -1,6 +1,6 @@
-import React, {useState} from "react";
-import {StyleSheet, View, TouchableOpacity, Dimensions} from "react-native";
-import {Card, Text} from '@ui-kitten/components';
+import React, {useEffect, useState} from "react";
+import {StyleSheet, View, TouchableOpacity, Dimensions, Image} from "react-native";
+import {Card, Modal, Text} from '@ui-kitten/components';
 
 // @ts-ignore
 import QrCodeIcon from '../../assets/icons/btn/qr-code.svg';
@@ -10,14 +10,23 @@ import EyeOutlineIcon from '../../assets/icons/btn/eye-outline.svg';
 import EyeOffOutlineIcon from '../../assets/icons/btn/eye-off-outline.svg';
 // @ts-ignore
 import CopyOutlineIcon from '../../assets/icons/btn/copy-outline.svg';
+import {BalancePanelProps} from "../../types/props";
+import {getBalance} from "../../api/ScashTvApi";
+import {smartTruncate} from "../../utils/FormatUtils";
 
 const {width: SCREEN_WIDTH} = Dimensions.get('window');
 
 const responsiveWidth = Math.min(SCREEN_WIDTH * 0.9, 400); // 取较小值
 const responsiveMinWidth = Math.min(SCREEN_WIDTH * 0.8, 320); // 最小宽度
 
-const BalancePanel: React.FC = () => {
+const BalancePanel: React.FC<BalancePanelProps> = ({
+                                                       walletInfo
+                                                   }) => {
+    const [balance, setBalance] = useState<number>(0);
     const [balanceVisible, setBalanceVisible] = useState(true);
+    const [address, setAddress] = useState<string>('');
+    const [tag, setTag] = useState<string>('Address');
+    const [qrVisible, setQrVisible] = React.useState(false);
 
     // 切换余额显示/隐藏
     const toggleBalanceVisibility = () => {
@@ -34,6 +43,19 @@ const BalancePanel: React.FC = () => {
         console.log('接收按钮点击');
         // 这里添加接收逻辑
     };
+
+    // 监听地址变化，请求数据
+    useEffect(() => {
+        if (walletInfo) {
+            console.log("个人余额查询地址：", walletInfo)
+            setAddress(walletInfo.addresses[0].address)
+            setTag(walletInfo.addresses[0].tag)
+            getBalance(walletInfo.addresses[0].address).then(res => {
+                console.log("个人余额查询地址：", walletInfo.addresses[0].address, res)
+                setBalance(res);
+            })
+        }
+    }, [walletInfo]);
 
     return (
         <>
@@ -69,7 +91,11 @@ const BalancePanel: React.FC = () => {
 
                             <TouchableOpacity
                                 style={styles.qrButton}
-                                onPress={() => console.log('打开二维码')}
+                                onPress={() => {
+                                    if (address) {
+                                        setQrVisible(true)
+                                    }
+                                }}
                                 activeOpacity={0.7}
                             >
                                 <QrCodeIcon
@@ -83,16 +109,20 @@ const BalancePanel: React.FC = () => {
                         <View style={styles.balanceRow}>
                             <Text style={styles.currencySymbol}>$</Text>
                             <Text style={styles.balanceAmount}>
-                                {balanceVisible ? '12,580.75' : '••••••'}
+                                {balanceVisible ? balance.toLocaleString() : '••••••'}
                             </Text>
                         </View>
                         <Text style={styles.balanceSubtitle}>美元等值</Text>
                     </View>
 
                     <View style={styles.cardFooter}>
-                        <Text style={styles.cardHolder}>ZHANG SAN</Text>
+                        <Text style={styles.cardHolder}>{tag}</Text>
                         <View style={styles.balanceLabelRowHeader}>
-                            <Text style={styles.cardNumber}>**** **** **** 1234</Text>
+                            <Text style={styles.cardNumber}>{smartTruncate(address, {
+                                frontLength: 10,
+                                backLength: 10,
+                                ellipsis: '······'
+                            })}</Text>
                             <TouchableOpacity
                                 onPress={() => console.log('复制钱包地址')}
                                 activeOpacity={0.7}
@@ -130,6 +160,30 @@ const BalancePanel: React.FC = () => {
                     </TouchableOpacity>
                 </View>
             </View>
+            <Modal
+                visible={qrVisible}
+                backdropStyle={styles.backdrop}
+                onBackdropPress={() => setQrVisible(false)}
+            >
+                <Card disabled={true}>
+                    <View style={styles.qrContainer}>
+                        <View>
+                            <Text category={'h6'}>{walletInfo?.name}</Text>
+                        </View>
+                        <View>
+                            <Image
+                                source={{uri: `https://scash.tv/qr/${address}`}}
+                                style={styles.image}
+                            />
+                        </View>
+                        <View style={{width: 200}}>
+                            <Text category={'c1'}>{tag}</Text>
+                            <Text category={'c2'}>{address}</Text>
+                        </View>
+                    </View>
+
+                </Card>
+            </Modal>
         </>
     )
 }
@@ -266,5 +320,18 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         fontSize: 16,
         fontWeight: 'bold',
+    },
+    backdrop: {
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    qrContainer: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    image: {
+        width: 200,
+        height: 200,
+        borderRadius: 10,
     },
 });

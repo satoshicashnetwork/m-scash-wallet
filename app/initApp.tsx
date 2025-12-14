@@ -1,8 +1,9 @@
 import React from "react";
 import {Dimensions, ImageBackground, StyleSheet, TouchableOpacity, View} from "react-native";
-import {Button, Card, Input, InputProps, Layout, Modal, Text} from "@ui-kitten/components";
+import {Layout, Modal, Text} from "@ui-kitten/components";
 import {SafeAreaView} from "react-native-safe-area-context";
-import {ScashWalletManager} from "../types/ScashWalletManager";
+import {ScashWalletManager} from "../models/ScashWalletManager";
+import ImportWalletModal from "../components/ImportWalletModal";
 
 
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
@@ -12,23 +13,16 @@ const localImages = {
 };
 
 
-const useInputState = (initialValue = ''): InputProps => {
-    const [value, setValue] = React.useState(initialValue);
-    return {value, onChangeText: setValue};
-};
-
 const InitAppScreen: React.FC = () => {
-
-    const walletManager = new ScashWalletManager();
 
 
     const [openImportModal, setOpenImportModal] = React.useState(false);
     const [openCreateModal, setOpenCreateModal] = React.useState(false);
 
-    const multilineInputState = useInputState();
 
     const createWallet = () => {
         console.log("创建钱包")
+        const walletManager = new ScashWalletManager();
     }
 
     const importWallet = () => {
@@ -75,17 +69,7 @@ const InitAppScreen: React.FC = () => {
                     animationType={'fade'}
                     onBackdropPress={() => setOpenImportModal(false)}
                 >
-                    <Card style={{width: SCREEN_WIDTH * .7}}>
-                        <Input
-                            multiline={true}
-                            textStyle={styles.inputTextStyle}
-                            placeholder='请输入12位助记词'
-                            {...multilineInputState}
-                        />
-                        <Button style={{marginTop: 8}} onPress={() => setOpenImportModal(false)}>
-                            导入
-                        </Button>
-                    </Card>
+                    <ImportWalletModal onClose={() => setOpenImportModal(false)}/>
                 </Modal>
             </Layout>
         </SafeAreaView>

@@ -5,23 +5,41 @@ import TarBar from '../components/TabBar'
 import * as eva from '@eva-design/eva';
 import {ApplicationProvider, Layout, Text} from '@ui-kitten/components';
 import TabsIndexScreen from "./(tabs)";
-import {WalletStorage} from "../types/WalletStorage";
+import {FileStorage} from "../store/FileStorage";
 import InitAppScreen from "./initApp";
+import Toast from "react-native-toast-message";
+import {FILE_NAME, KEYS} from "../types/common-enums";
+import {getItem, setItem} from "../store/UniversalStorage";
+import {WalletInfo} from "../types";
 
 const AppScreen: React.FC = () => {
     const [activeIndex, setActiveIndex] = useState(999);
     const [isInitialized, setIsInitialized] = useState<boolean | null>(null);
+    // const [address, setAddress] = useState<string>("");
+    const [curWalletInfo, setCurWalletInfo] = useState<WalletInfo | null>(null);
+
 
     // 读取钱包文件
-    const walletFile = new WalletStorage()
+    const fileStorage = new FileStorage()
 
     useEffect(() => {
         console.log("读取钱包数据");
-        walletFile.read().then(res => {
-            console.log("钱包数据", res);
-            if (res) {
+        fileStorage.read(FILE_NAME.WALLET_LIST).then(walletListJson => {
+            console.log("钱包数据", walletListJson);
+            if (walletListJson) {
                 // 钱包文件存在，初始化过了
                 setIsInitialized(true);
+                // 找到默认主钱包
+                let walletList: WalletInfo[] = JSON.parse(walletListJson);
+                let walletInfo = walletList.find(item => item.isDefault);
+                if (walletInfo) {
+                    // 存在默认钱包
+                    setCurWalletInfo(walletInfo)
+                } else {
+                    // 没有默认钱包 就随机取一个
+                    setCurWalletInfo(walletList[0])
+                }
+                console.log("查询的钱包", curWalletInfo);
             } else {
                 // 钱包文件不存在，需要初始化
                 setIsInitialized(false);
@@ -35,9 +53,16 @@ const AppScreen: React.FC = () => {
 
     useEffect(() => {
         console.log("监听isInitialized变化", isInitialized)
+        if (isInitialized) {
+            Toast.show({
+                type: 'success',
+                text1: '欢迎回来！'
+            });
+        }
     }, [isInitialized]);
     return (
         <>
+            <Toast/>
             <ApplicationProvider {...eva} theme={eva.light}>
                 {isInitialized === null ? (
                     // 还在读取中，可以显示 Loading（可选）
@@ -47,7 +72,8 @@ const AppScreen: React.FC = () => {
                 ) : isInitialized ? (
                     // 钱包已初始化，显示主界面
                     <View style={styles.container}>
-                        <TabsIndexScreen activeTab={activeIndex}/>
+                        <TabsIndexScreen activeTab={activeIndex}
+                                         walletInfo={curWalletInfo}/>
                         <TarBar changeTabIndex={(index) => {
                             setActiveIndex(index);
                         }}/>

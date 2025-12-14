@@ -15,7 +15,10 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "network.scash.m.wallet"
+      "bundleIdentifier": "network.scash.m.wallet",
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "This app uses Face ID for secure authentication."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -24,7 +27,11 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "network.scash.m.wallet"
+      "package": "network.scash.m.wallet",
+      "permissions": [
+        "USE_FINGERPRINT",
+        "USE_BIOMETRIC"
+      ]
     },
     "web": {
       "favicon": "./assets/images/logo.png",

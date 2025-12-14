@@ -5,19 +5,17 @@ import HomeScreen from "./Home";
 import React, {useState} from "react";
 import WalletScreen from "./Wallet";
 import MinerScreen from "./Miner";
-
-interface TabsIndexScreenProps {
-    activeTab: number;  // 当前选中的下标
-}
+import {TabsIndexScreenProps} from "../../types/props";
 
 
 const TabsIndexScreen: React.FC<TabsIndexScreenProps> = ({
-                                                             activeTab
+                                                             activeTab,
+                                                             walletInfo
                                                          }) => {
     return (
         <>
             <View style={styles.container}>
-                {activeTab === 0 && (<HomeScreen/>)}
+                {activeTab === 0 && (<HomeScreen walletInfo={walletInfo}/>)}
                 {activeTab === 1 && (<WalletScreen/>)}
                 {activeTab === 2 && (<MinerScreen/>)}
             </View>
