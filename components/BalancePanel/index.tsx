@@ -10,14 +10,19 @@ import EyeOutlineIcon from '../../assets/icons/btn/eye-outline.svg';
 import EyeOffOutlineIcon from '../../assets/icons/btn/eye-off-outline.svg';
 // @ts-ignore
 import CopyOutlineIcon from '../../assets/icons/btn/copy-outline.svg';
-import {BalancePanelProps} from "../../types/props";
 import {getBalance} from "../../api/ScashTvApi";
 import {smartTruncate} from "../../utils/FormatUtils";
+import {WalletInfo} from "../../types";
 
 const {width: SCREEN_WIDTH} = Dimensions.get('window');
 
 const responsiveWidth = Math.min(SCREEN_WIDTH * 0.9, 400); // 取较小值
 const responsiveMinWidth = Math.min(SCREEN_WIDTH * 0.8, 320); // 最小宽度
+
+
+interface BalancePanelProps {
+    walletInfo: WalletInfo | null;
+}
 
 const BalancePanel: React.FC<BalancePanelProps> = ({
                                                        walletInfo

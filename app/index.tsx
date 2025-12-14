@@ -7,15 +7,12 @@ import {ApplicationProvider, Layout, Text} from '@ui-kitten/components';
 import TabsIndexScreen from "./(tabs)";
 import {FileStorage} from "../store/FileStorage";
 import InitAppScreen from "./initApp";
-import Toast from "react-native-toast-message";
 import {FILE_NAME, KEYS} from "../types/common-enums";
-import {getItem, setItem} from "../store/UniversalStorage";
 import {WalletInfo} from "../types";
 
 const AppScreen: React.FC = () => {
     const [activeIndex, setActiveIndex] = useState(999);
     const [isInitialized, setIsInitialized] = useState<boolean | null>(null);
-    // const [address, setAddress] = useState<string>("");
     const [curWalletInfo, setCurWalletInfo] = useState<WalletInfo | null>(null);
 
 
@@ -53,16 +50,9 @@ const AppScreen: React.FC = () => {
 
     useEffect(() => {
         console.log("监听isInitialized变化", isInitialized)
-        if (isInitialized) {
-            Toast.show({
-                type: 'success',
-                text1: '欢迎回来！'
-            });
-        }
     }, [isInitialized]);
     return (
         <>
-            <Toast/>
             <ApplicationProvider {...eva} theme={eva.light}>
                 {isInitialized === null ? (
                     // 还在读取中，可以显示 Loading（可选）

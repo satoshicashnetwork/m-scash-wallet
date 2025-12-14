@@ -5,8 +5,12 @@ import HomeScreen from "./Home";
 import React, {useState} from "react";
 import WalletScreen from "./Wallet";
 import MinerScreen from "./Miner";
-import {TabsIndexScreenProps} from "../../types/props";
+import {WalletInfo} from "../../types";
 
+interface TabsIndexScreenProps {
+    activeTab: number;  // 当前选中的下标
+    walletInfo: WalletInfo | null;
+}
 
 const TabsIndexScreen: React.FC<TabsIndexScreenProps> = ({
                                                              activeTab,

@@ -6,8 +6,11 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import BalancePanel from "../../components/BalancePanel";
 import HomeTopNavi from "../../components/HomeTopNavi";
 import RecentTransactions from "../../components/RecentTransactions";
-import {HomeScreenProps} from "../../types/props";
+import {WalletInfo} from "../../types";
 
+interface HomeScreenProps {
+    walletInfo: WalletInfo | null;
+}
 
 const HomeScreen: React.FC<HomeScreenProps> = ({
                                                    walletInfo

@@ -1,4 +1,3 @@
-// components/RecentTransactionsList.tsx
 import React, {useEffect, useRef, useState} from 'react';
 import {
     View,
@@ -23,10 +22,13 @@ import ArrowUpwardIcon from '../../assets/icons/others/arrow-upward.svg';
 import ExternalLinkOutlineIcon from '../../assets/icons/btn/external-link-outline.svg';
 
 import {formatRelativeTime, smartTruncate} from "../../utils/FormatUtils";
-import {RecentTransactionsProps} from "../../types/props";
-import {getAddressTxs, getBalance} from "../../api/ScashTvApi";
+import {getAddressTxs} from "../../api/ScashTvApi";
 import {AddressTx, Transaction} from "../../types/api-scash-tv";
+import {WalletInfo} from "../../types";
 
+interface RecentTransactionsProps {
+    walletInfo: WalletInfo | null;
+}
 
 // 主组件
 const RecentTransactions: React.FC<RecentTransactionsProps> = ({
@@ -57,7 +59,6 @@ const RecentTransactions: React.FC<RecentTransactionsProps> = ({
             </View>
         )
     }
-
 
     const renderItemHeader = (headerProps: any, transaction: Transaction): React.ReactElement => {
         const isSend = transaction[2] !== 0;

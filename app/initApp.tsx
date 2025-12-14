@@ -1,9 +1,10 @@
-import React from "react";
+import React, {useState} from "react";
 import {Dimensions, ImageBackground, StyleSheet, TouchableOpacity, View} from "react-native";
 import {Layout, Modal, Text} from "@ui-kitten/components";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {ScashWalletManager} from "../models/ScashWalletManager";
 import ImportWalletModal from "../components/ImportWalletModal";
+import CreateWalletModal from "../components/CreateWalletModal";
 
 
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
@@ -16,13 +17,13 @@ const localImages = {
 const InitAppScreen: React.FC = () => {
 
 
-    const [openImportModal, setOpenImportModal] = React.useState(false);
-    const [openCreateModal, setOpenCreateModal] = React.useState(false);
+    const [openImportModal, setOpenImportModal] = useState(false);
+    const [openCreateModal, setOpenCreateModal] = useState(false);
 
 
     const createWallet = () => {
         console.log("创建钱包")
-        const walletManager = new ScashWalletManager();
+        setOpenCreateModal(true)
     }
 
     const importWallet = () => {
@@ -70,6 +71,14 @@ const InitAppScreen: React.FC = () => {
                     onBackdropPress={() => setOpenImportModal(false)}
                 >
                     <ImportWalletModal onClose={() => setOpenImportModal(false)}/>
+                </Modal>
+                <Modal
+                    visible={openCreateModal}
+                    backdropStyle={styles.backdrop}
+                    animationType={'fade'}
+                    onBackdropPress={() => setOpenCreateModal(false)}
+                >
+                    <CreateWalletModal onClose={() => setOpenCreateModal(false)}/>
                 </Modal>
             </Layout>
         </SafeAreaView>
