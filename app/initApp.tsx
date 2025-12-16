@@ -13,8 +13,11 @@ const localImages = {
     background: require('../assets/images/logo.png')
 };
 
+interface InitAppProps {
+    reload: () => void;
+}
 
-const InitAppScreen: React.FC = () => {
+const InitAppScreen: React.FC<InitAppProps> = ({reload}) => {
 
 
     const [openImportModal, setOpenImportModal] = useState(false);
@@ -29,6 +32,10 @@ const InitAppScreen: React.FC = () => {
     const importWallet = () => {
         console.log("导入钱包")
         setOpenImportModal(true);
+    }
+
+    const closeImportWallet = () => {
+        setOpenImportModal(false);
     }
 
     return (

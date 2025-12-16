@@ -24,3 +24,5 @@ export interface WalletInfo {
     type: 'Phrase' | 'Core'; // 钱包类型： 助记词钱包  核心钱包
     isDefault: boolean;  // 是否默认钱包
 }
+
+

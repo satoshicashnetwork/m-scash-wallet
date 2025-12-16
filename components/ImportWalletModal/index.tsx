@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Button, Card, Input, InputProps} from "@ui-kitten/components";
+import {Button, Card, Input, InputProps, Spinner, Text} from "@ui-kitten/components";
 import {Dimensions, StyleSheet} from "react-native";
 import {ScashWalletManager} from "../../models/ScashWalletManager";
 import {FileStorage} from "../../store/FileStorage";
@@ -14,6 +14,7 @@ const useInputState = (initialValue = ''): InputProps => {
     return {value, onChangeText: setValue};
 };
 
+
 interface ImportWalletModalProps {
     onClose: () => void;
 }
@@ -23,15 +24,31 @@ const ImportWalletModal: React.FC<ImportWalletModalProps> = ({
                                                              }) => {
 
     const multilineInputState = useInputState();
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [isImportSuccess, setIsImportSuccess] = React.useState(false);
+    const [error, setError] = React.useState<string>('');
 
     const handleImportSeed = () => {
-
+        setIsLoading(true);
 
         console.log("输入助记词：", multilineInputState.value);
         // 完成助记词的导入以及钱包的生成
         if (multilineInputState.value) {
             const walletManager = new ScashWalletManager();
-            let walletSeed = walletManager.importFromMnemonic(multilineInputState.value);
+            let walletSeed: IScashWallet | null = null
+
+            // 这里需要判断是否异常
+            try {
+                walletSeed = walletManager.importFromMnemonic(multilineInputState.value);
+            } catch (e: any) {
+                setError(e.message as any)
+                return;
+            }
+
+            if (!walletSeed) {
+                setError('导入钱包失败')
+                return;
+            }
 
             // 完成钱包信息保存
             let fileStorage = new FileStorage();
@@ -43,6 +60,13 @@ const ImportWalletModal: React.FC<ImportWalletModalProps> = ({
                     // 表示钱包存在
                     wallets = JSON.parse(res) as IScashWallet[]
                 }
+                // 校验钱包是否已经存在了
+                let existWallet = wallets.filter(item => item.address === walletSeed.address);
+                console.log("检测是否存在该地址", existWallet);
+                if (existWallet && existWallet.length > 0) {
+                    setError('请勿重复导入钱包')
+                    return
+                }
                 wallets.push(walletSeed)
                 fileStorage.store(JSON.stringify(wallets), FILE_NAME.WALLET_INFO).then(() => {
                     // 导入钱包成功，需要序列化一下钱包列表
@@ -51,9 +75,10 @@ const ImportWalletModal: React.FC<ImportWalletModalProps> = ({
                         if (listJson) {
                             walletList = JSON.parse(listJson);
                         }
+                        let isDefault = walletList.length > 0
                         let newWalletInfo: WalletInfo = {
                             id: new Date().getTime() + "",
-                            avatar: '',
+                            avatar: 'a1',
                             name: '钱包',
                             addresses: [
                                 {
@@ -62,7 +87,7 @@ const ImportWalletModal: React.FC<ImportWalletModalProps> = ({
                                 }
                             ],
                             type: 'Phrase',
-                            isDefault: false
+                            isDefault: isDefault
                         }
                         walletList.push(newWalletInfo)
                         fileStorage.store(JSON.stringify(walletList), FILE_NAME.WALLET_LIST).then(() => {
@@ -76,9 +101,7 @@ const ImportWalletModal: React.FC<ImportWalletModalProps> = ({
                 }).catch(err => {
 
                 }).finally(() => {
-                    if (onClose) {
-                        onClose();
-                    }
+                    setIsLoading(true);
                 })
             })
 
@@ -89,16 +112,22 @@ const ImportWalletModal: React.FC<ImportWalletModalProps> = ({
     return (
         <>
             <Card style={{width: SCREEN_WIDTH * .7}}>
-                <Input
-                    multiline={true}
-                    textStyle={styles.inputTextStyle}
-                    placeholder='请输入12位助记词'
-                    {...multilineInputState}
-                />
-                <Button style={{marginTop: 8}} onPress={handleImportSeed}>
-                    导入
-                </Button>
-                <Toast/>
+                {isLoading ? (
+                    <Spinner size='giant'/>
+                ) : (
+                    <>
+                        <Input
+                            multiline={true}
+                            textStyle={styles.inputTextStyle}
+                            placeholder='请输入12位助记词'
+                            disabled={!isImportSuccess}
+                            {...multilineInputState}
+                        />
+                        <Button disabled={isLoading} style={{marginTop: 8}} onPress={handleImportSeed}>
+                            导入
+                        </Button>
+                    </>
+                )}
             </Card>
         </>
     )

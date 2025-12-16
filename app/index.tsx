@@ -16,11 +16,10 @@ const AppScreen: React.FC = () => {
     const [curWalletInfo, setCurWalletInfo] = useState<WalletInfo | null>(null);
 
 
-    // 读取钱包文件
-    const fileStorage = new FileStorage()
-
-    useEffect(() => {
-        console.log("读取钱包数据");
+    // 刷新钱包工具
+    const reloadWallet = () => {
+        // 读取钱包文件
+        const fileStorage = new FileStorage()
         fileStorage.read(FILE_NAME.WALLET_LIST).then(walletListJson => {
             console.log("钱包数据", walletListJson);
             if (walletListJson) {
@@ -46,6 +45,11 @@ const AppScreen: React.FC = () => {
             // 出错也按未初始化处理
             setIsInitialized(false);
         });
+    }
+
+    useEffect(() => {
+        console.log("读取钱包数据");
+        reloadWallet()
     }, []);
 
     useEffect(() => {
@@ -71,7 +75,7 @@ const AppScreen: React.FC = () => {
                 ) : (
                     // 钱包未初始化，显示初始化界面
                     <View>
-                        <InitAppScreen/>
+                        <InitAppScreen reload={() => reloadWallet()}/>
                     </View>
                 )}
             </ApplicationProvider>
