@@ -1,16 +1,20 @@
 import { Slot } from 'expo-router';
-import * as eva from '@eva-design/eva';
-import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
-import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {createTamagui, TamaguiProvider} from 'tamagui';
+
+import { ThemeProvider } from '../contexts/ThemeContext';
+import {defaultConfig} from "@tamagui/config/v4";
+
+const config = createTamagui(defaultConfig);
 
 export default function RootLayout() {
     return (
         <SafeAreaProvider>
-            <IconRegistry icons={EvaIconsPack} />
-            <ApplicationProvider {...eva} theme={eva.light}>
-                <Slot />
-            </ApplicationProvider>
+            <ThemeProvider>
+                <TamaguiProvider config={config} defaultTheme="light">
+                    <Slot />
+                </TamaguiProvider>
+            </ThemeProvider>
         </SafeAreaProvider>
     );
 }
